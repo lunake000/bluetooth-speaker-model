@@ -1,0 +1,3 @@
+# Keep the large original WAV source files locally; the smaller MP3 copies are published.
+audio/*.wav
+.DS_Store

@@ -1,0 +1,169 @@
+/* This file controls the speaker's appearance. JavaScript controls its behavior. */
+
+:root {
+  --dark: #15212a;
+  --panel: #263945;
+  --screen: #0c1720;
+  --text: #eff7f8;
+  --muted: #a9bec5;
+  --blue: #43c7ee;
+  --green: #6ee37c;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  padding: 2rem 1rem;
+  background: linear-gradient(135deg, #d9edf2, #a8c5cf);
+  color: var(--dark);
+  font-family: Arial, sans-serif;
+}
+
+.page { width: min(100%, 700px); text-align: center; }
+h1 { margin: 0; }
+.instructions { margin: 0.65rem 0 1.5rem; }
+
+.speaker {
+  overflow: hidden;
+  border: 8px solid #1a2932;
+  border-radius: 28px;
+  background: var(--panel);
+  box-shadow: 0 18px 30px rgba(21, 33, 42, 0.27);
+}
+
+/* JavaScript adds .is-playing to .speaker. Only then do the lights animate. */
+.speaker.is-playing {
+  box-shadow: 0 0 var(--light-glow, 18px) var(--music-color, #43c7ee), 0 18px 30px rgba(21, 33, 42, 0.27);
+}
+
+.speaker-top {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.8rem 1.1rem;
+  background: #1d2d36;
+  color: var(--text);
+}
+
+.status-light { width: 13px; height: 13px; border-radius: 50%; background: #73818a; }
+.status-light.on { background: var(--blue); box-shadow: 0 0 10px var(--blue); }
+.status-light.connected, .status-light.playing { background: var(--green); box-shadow: 0 0 10px var(--green); }
+.status-text { margin: 0; font-weight: bold; }
+
+.speaker-body {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  grid-template-areas:
+    "grille display"
+    "lights display";
+  gap: 1rem;
+  align-items: center;
+  padding: 1.25rem;
+}
+
+.speaker-grille {
+  grid-area: grille;
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.45rem;
+  padding: 1rem;
+  border: 5px solid #18252e;
+  border-radius: 50%;
+  background: #101b22;
+}
+
+.speaker-grille span { border-radius: 50%; background: #425866; }
+
+.music-lights {
+  grid-area: lights;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: 0.3rem;
+  height: 72px;
+}
+
+.music-lights span {
+  width: 8px;
+  height: 14px;
+  border-radius: 8px;
+  background: #49616c;
+  transition: background 0.2s;
+}
+
+/* The different delays make the bars look like a moving music visualizer. */
+.speaker.is-playing .music-lights span {
+  background: var(--music-color, var(--blue));
+  box-shadow: 0 0 var(--bar-glow, 10px) var(--music-color, var(--blue));
+  animation: dance 0.75s ease-in-out infinite alternate;
+}
+.speaker.is-playing .music-lights span:nth-child(2n) { animation-delay: -0.25s; background: var(--music-color-two, #9d7cff); }
+.speaker.is-playing .music-lights span:nth-child(3n) { animation-delay: -0.5s; background: var(--music-color-three, var(--green)); }
+
+@keyframes dance {
+  from { height: 14px; opacity: 0.45; }
+  /* JavaScript calculates this height from the current volume. */
+  to { height: var(--light-height, 62px); opacity: 1; }
+}
+
+.display {
+  grid-area: display;
+  min-height: 180px;
+  padding: 1.25rem;
+  border-radius: 14px;
+  text-align: left;
+  background: var(--screen);
+  color: var(--text);
+}
+
+.display-label { margin: 0; color: var(--blue); font-size: 0.72rem; font-weight: bold; letter-spacing: 0.12em; }
+.song-title { margin: 0.7rem 0 0.3rem; font-size: 1.35rem; font-weight: bold; }
+.connection-text { margin: 0; color: var(--muted); font-size: 0.9rem; }
+
+.volume-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.5rem; margin-top: 1.5rem; color: var(--muted); font-size: 0.85rem; }
+.volume-track { height: 8px; overflow: hidden; border-radius: 10px; background: #40515b; }
+.volume-fill { width: 50%; height: 100%; border-radius: inherit; background: var(--blue); transition: width 0.2s; }
+#volume-text { color: var(--text); font-weight: bold; }
+
+.controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem; padding: 1rem; background: #1d2d36; }
+.control-button {
+  min-width: 67px;
+  min-height: 58px;
+  border: 0;
+  border-radius: 10px;
+  background: #3a5361;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 1.3rem;
+  transition: transform 0.15s, background 0.15s;
+}
+
+.control-button span { display: block; margin-top: 0.15rem; font-size: 0.65rem; }
+.control-button:hover, .control-button:focus-visible { background: #507282; transform: translateY(-2px); outline: 3px solid var(--blue); outline-offset: 2px; }
+.control-button.power { background: #a84d4d; }
+.control-button.play { background: #247b92; }
+
+/* Disabled controls make the required order of actions clear to the user. */
+.control-button:disabled {
+  background: #53636c;
+  color: #aebbc0;
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.control-button:disabled:hover { transform: none; outline: none; }
+
+.message { min-height: 1.5rem; margin: 1.2rem 0 0.5rem; font-weight: bold; }
+.playlist-note { margin: 0; color: #334c58; font-size: 0.9rem; line-height: 1.45; }
+
+@media (max-width: 520px) {
+  .speaker-body { grid-template-columns: 1fr; grid-template-areas: "grille" "lights" "display"; }
+  .speaker-grille { width: 170px; margin: 0 auto; }
+  .music-lights { margin: -0.5rem 0; }
+  .display { min-height: 150px; }
+  .control-button { min-width: 60px; }
+}

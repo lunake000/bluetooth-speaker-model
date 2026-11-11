@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bluetooth Speaker Model</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="page">
+      <h1>Bluetooth Speaker Model</h1>
+      <p class="instructions">Turn on the speaker, connect Bluetooth, then try the music controls.</p>
+
+      <section id="speaker" class="speaker" aria-label="Simulated Bluetooth speaker">
+        <div class="speaker-top">
+          <span id="status-light" class="status-light off" aria-hidden="true"></span>
+          <p id="status-text" class="status-text" aria-live="polite">Speaker is off</p>
+        </div>
+
+        <div class="speaker-body">
+          <div class="speaker-grille" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+
+          <!-- These bars become animated only while the simulated music is playing. -->
+          <div class="music-lights" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+
+          <div class="display">
+            <p class="display-label">NOW PLAYING</p>
+            <p id="song-title" class="song-title">Midnight Walk</p>
+            <p id="connection-text" class="connection-text">Bluetooth disconnected</p>
+
+            <div class="volume-row">
+              <span>Volume</span>
+              <div class="volume-track" aria-hidden="true">
+                <div id="volume-fill" class="volume-fill"></div>
+              </div>
+              <output id="volume-text">50%</output>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls" aria-label="Speaker controls">
+          <button id="power-button" class="control-button power" type="button" aria-label="Turn speaker on or off">⏻<span>Power</span></button>
+          <button id="bluetooth-button" class="control-button" type="button" aria-label="Connect or disconnect Bluetooth">ᛒ<span>Bluetooth</span></button>
+          <button id="volume-down-button" class="control-button" type="button" aria-label="Decrease volume">−<span>Vol −</span></button>
+          <button id="play-pause-button" class="control-button play" type="button" aria-label="Play or pause">▶<span>Play</span></button>
+          <button id="volume-up-button" class="control-button" type="button" aria-label="Increase volume">+<span>Vol +</span></button>
+          <button id="previous-button" class="control-button" type="button" aria-label="Previous song">⏮<span>Previous</span></button>
+          <button id="next-button" class="control-button" type="button" aria-label="Next song">⏭<span>Next</span></button>
+        </div>
+      </section>
+
+      <p id="message" class="message" aria-live="polite">Press Power to begin.</p>
+      <p class="playlist-note">Playlist: Midnight Walk · City Lights · Sunday Morning. At either end, the playlist wraps around to the other end.</p>
+      <!-- Add your own legal / royalty-free MP3 files at these paths to hear real audio. -->
+      <audio id="audio-player" preload="metadata"></audio>
+    </main>
+
+    <!-- The JavaScript file is loaded after the HTML so it can find every button. -->
+    <script src="script.js"></script>
+  </body>
+</html>
